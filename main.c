@@ -269,7 +269,7 @@ void set_data(virt_t virt_address, uint8_t value)
     ra_mem[virt_2_ram_address(virt_address)] = value;
 }
 
-int main(void) // Vollständig unverändert
+int main(void) // Vollständig unverändert, abgesehen von der Initialisierung der Seitentabelle!
 {
     puts("test driver_");
     uint8_t hd_mem_expected[4194303];
@@ -282,7 +282,7 @@ int main(void) // Vollständig unverändert
         hd_mem_expected[i] = val;
     }
 
-    for (uint32_t i = 0; i < 1023; i++)
+    for (uint32_t i = 0; i < PT_SIZE; i++)
     {
         seitentabelle[i].dirty_bit = 0;
         seitentabelle[i].page_frame = -1;
