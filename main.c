@@ -7,7 +7,7 @@
 // Konstanten:
 #define HD_SIZE 4194303
 #define RA_SIZE 65535
-#define PT_SIZE 1024
+#define PT_SIZE 1024 // Ursprünglich 1023, was dazu führte, dass die Zeile für Seite 1023 außerhalb des Arrays geschrieben wurde
 
 #define PG_BITS 12
 #define PG_SIZE (1 << PG_BITS)
@@ -34,7 +34,7 @@ struct seitentabellen_zeile
     // Nächstes und vorheriges Queue Element für LRU
     page_t next;
     page_t prev;
-} seitentabelle[PT_SIZE]; // War ursprünglich 1023, wodurch die Initialisierung in main immer out of bounds war und irgendetwas anderes überschrieben hat.........
+} seitentabelle[PT_SIZE];
 
 // LRU-Queue Komponenten:
 page_t least_recently_used = -1;
