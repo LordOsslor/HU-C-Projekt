@@ -226,7 +226,7 @@ void read_page_to_ra(page_t seitennummer)
     if (is_mem_full())
     { // Alle Queue-Plätze sind gefüllt, der Platz in ra_mem der am längsten unbenutzten Seite wird recycled
         seitentabelle[seitennummer].page_frame = seitentabelle[least_recently_used].page_frame;
-        remove_lru_page(least_recently_used);
+        remove_lru_page();
     }
     else
         seitentabelle[seitennummer].page_frame = queue_len++; // Es sind noch nicht alle Queue-Plätze gefüllt, page_frame
