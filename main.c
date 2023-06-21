@@ -30,13 +30,15 @@ struct seitentabellen_zeile
     uint8_t present_bit;
     uint8_t dirty_bit;
     frame_t page_frame;
-
-    // Nächstes und vorheriges Queue Element für LRU
-    page_t next;
-    page_t prev;
 } seitentabelle[PT_SIZE];
 
 // LRU-Queue Komponenten:
+struct queue_element
+{
+    page_t next;
+    page_t prev;
+} queue[PT_SIZE];
+
 page_t least_recently_used = -1;
 page_t most_recently_used = -1;
 frame_t queue_len = 0;
@@ -131,10 +133,12 @@ void set_dirty(page_t seitennummer)
 void init_queue(page_t seitennummer)
 {
     /**
-     * Initialisiert die Queue mit der gegebenen Seite als erstes Element
+     * Initialisiert die Queue mit der gegebenen Seite als erstes Element.
+     * Es muss nicht über alle Elemente geloopt werden, da prev und next immer zuerst gesetzt und dann gelesene werden
      */
-    seitentabelle[seitennummer].next = -1;
-    seitentabelle[seitennummer].prev = -1;
+
+    queue[seitennummer].next = -1;
+    queue[seitennummer].prev = -1;
 
     least_recently_used = seitennummer;
     most_recently_used = seitennummer;
@@ -145,8 +149,8 @@ void enqueue(page_t seitennummer)
     /**
      * Fügt die gegebene Seite zum Anfang der Queue hinzu
      */
-    seitentabelle[most_recently_used].prev = seitennummer;
-    seitentabelle[seitennummer].next = most_recently_used;
+    queue[most_recently_used].prev = seitennummer;
+    queue[seitennummer].next = most_recently_used;
 
     most_recently_used = seitennummer;
 }
@@ -159,11 +163,11 @@ void bring_to_front(page_t seitennummer)
     if (most_recently_used == seitennummer)
         return;
 
-    page_t prev = seitentabelle[seitennummer].prev;
-    page_t next = seitentabelle[seitennummer].next;
+    page_t prev = queue[seitennummer].prev;
+    page_t next = queue[seitennummer].next;
 
-    seitentabelle[next].prev = prev;
-    seitentabelle[prev].next = next;
+    queue[next].prev = prev;
+    queue[prev].next = next;
 }
 
 page_t dequeue()
@@ -173,8 +177,8 @@ page_t dequeue()
      */
 
     page_t lru = least_recently_used;
-    least_recently_used = seitentabelle[least_recently_used].prev;
-    seitentabelle[least_recently_used].next = -1;
+    least_recently_used = queue[least_recently_used].prev;
+    queue[least_recently_used].next = -1;
     return lru;
 }
 
