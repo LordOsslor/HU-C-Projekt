@@ -5,9 +5,9 @@
 #include <sys/random.h>
 
 // Konstanten:
-#define HD_SIZE 4194303
-#define RA_SIZE 65535
-#define PT_SIZE 1024 // Ursprünglich 1023, was dazu führte, dass die Zeile für Seite 1023 außerhalb des Arrays geschrieben wurde
+#define HD_SIZE 4194304 // In der Beispieldatei um Eins weniger, was zwar der höchste Index des Arrays gewesen wäre, nicht aber die Länge!
+#define RA_SIZE 65536   // Genau wie HD_SIZE zu klein!
+#define PT_SIZE 1024    // Da HD_SIZE um eins zu niedrig war, wurde mittels HD_SIZE >> 12 = 1023 die falsche Seitenanzahl ermittelt!
 
 #define PG_BITS 12
 #define PG_SIZE (1 << PG_BITS)
