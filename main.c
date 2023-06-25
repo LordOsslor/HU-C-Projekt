@@ -4,6 +4,17 @@
 #include <time.h>
 #include <sys/random.h>
 
+/**
+ * Hi, ich habe einige Probleme mit der Beispieldatei gehabt. Meiner Meinung nach sind die Größen der
+ * drei Arrays hd_mem, ra_mem und seitentabelle jeweils um genau eins zu wenig!
+ * Zwar ist 2^32 - 1 = 41494303 der höchste Index eines wertes in hd_mem, nicht aber die Länge des Arrays.
+ * Das gleiche gilt für 2^16 - 1 = 65535, aber ra_mem muss trotzdem 2^16 = 65536 sein.
+ * Durch HD_SIZE >> 12 = 1023 hat sich auch eine falsche Größe für die Seitentabelle ergeben!
+ *
+ * Vielleicht habe ich das ja auch falsch verstanden, aber ich dachte, die Array-Deklarierung
+ * geschieht in C wie bei allen anderen Sprachen auch über die Länge des Arrays und nicht über den höchsten Index.
+ */
+
 // Konstanten:
 #define HD_SIZE 4194304 // In der Beispieldatei um Eins weniger, was zwar der höchste Index des Arrays gewesen wäre, nicht aber die Länge!
 #define RA_SIZE 65536   // Genau wie HD_SIZE zu klein!
